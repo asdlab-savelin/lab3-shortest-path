@@ -7,10 +7,9 @@ import java.util.StringTokenizer;
 public class Pathbge1 {
     FastScanner in;
     PrintWriter out;
-    Queue<Integer> queue;
     ArrayList<Integer>[] graph;
     boolean[] color;
-    int[] d;
+    int[] d, p;
 
     public static void main(String[] arg) {
         new Pathbge1().run();
@@ -20,13 +19,13 @@ public class Pathbge1 {
         int n = in.nextInt();
         int m = in.nextInt();
         graph = new ArrayList[n];
-        queue = new PriorityQueue<Integer>();
         color = new boolean[n];
         d = new int[n];
+        p = new int[n];
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList();
             color[i] = false;
-            d[i] = 0;
+            d[i] = 100;
         }
         for (int i = 0; i < m; i++) {
             int t1 = in.nextInt() - 1;
@@ -35,17 +34,23 @@ public class Pathbge1 {
             graph[t2].add(t1);
         }
         int s = 0;
-        queue.add(s);
-        color[s] = true;
-        while (!queue.isEmpty()) {
-            int v = queue.peek();
-            queue.remove();
-            for (int i = 0; i < graph[v].size(); i++) {
-                int to = graph[v].get(i);
-                if (!color[to]) {
-                    color[to] = true;
-                    queue.add(to);
+        d[s] = 0;
+        for (int i = 0; i < n; i++) {
+            int v = -1;
+            for (int j = 0; j < n; j++) {
+                if (!color[j] && (v == -1 || d[j] < d[v])) {
+                    v = j;
+                }
+            }
+            if (d[v] == 100) {
+                break;
+            }
+            color[v] = true;
+            for (int j = 0; j < graph[v].size(); j++) {
+                int to = graph[v].get(j);
+                if (d[v] + 1 < d[to]) {
                     d[to] = d[v] + 1;
+                    p[to] = v;
                 }
             }
         }
@@ -66,26 +71,6 @@ public class Pathbge1 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public class Pair {
-        int v1;
-        int v2;
-
-        Pair(int v1, int v2) {
-            this.v1 = v1;
-            this.v2 = v2;
-        }
-
-        public int getV1() {
-            return v1;
-        }
-
-        public int getV2() {
-            return v2;
-        }
-
-
     }
 
     class FastScanner {
