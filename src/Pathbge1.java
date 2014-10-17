@@ -1,38 +1,26 @@
-import java.util.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Pathbge1 {
     FastScanner in;
     PrintWriter out;
-    Queue queue;
+    Queue<Integer> queue;
     ArrayList<Integer>[] graph;
     boolean[] color;
     int[] d;
 
-    public class Pair {
-        int v1;
-        int v2;
-        Pair(int v1, int v2) {
-            this.v1 = v1;
-            this.v2 = v2;
-        }
-
-        public int getV1() {
-            return v1;
-        }
-
-        public int getV2() {
-            return v2;
-        }
-
-
+    public static void main(String[] arg) {
+        new Pathbge1().run();
     }
 
     public void solve() throws IOException {
         int n = in.nextInt();
         int m = in.nextInt();
         graph = new ArrayList[n];
-        queue = new Queue();
+        queue = new PriorityQueue<Integer>();
         color = new boolean[n];
         d = new int[n];
         for (int i = 0; i < n; i++) {
@@ -46,7 +34,7 @@ public class Pathbge1 {
             graph[t1].add(t2);
             graph[t2].add(t1);
         }
-        int s = 1;
+        int s = 0;
         queue.add(s);
         color[s] = true;
         while (!queue.isEmpty()) {
@@ -80,6 +68,26 @@ public class Pathbge1 {
         }
     }
 
+    public class Pair {
+        int v1;
+        int v2;
+
+        Pair(int v1, int v2) {
+            this.v1 = v1;
+            this.v2 = v2;
+        }
+
+        public int getV1() {
+            return v1;
+        }
+
+        public int getV2() {
+            return v2;
+        }
+
+
+    }
+
     class FastScanner {
         BufferedReader br;
         StringTokenizer st;
@@ -106,9 +114,5 @@ public class Pathbge1 {
         int nextInt() {
             return Integer.parseInt(next());
         }
-    }
-
-    public static void main(String[] arg) {
-        new Pathbge1().run();
     }
 }
